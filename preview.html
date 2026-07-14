@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>To-do by RE/MAX</title>
+  <meta name="theme-color" content="#003DA5" />
+  <style>
+    :root{
+      --remax-blue:#003DA5;
+      --remax-red:#E31B23;
+      --ink:#101828;
+      --muted:#667085;
+      --line:#E5E7EB;
+      --soft:#F5F7FB;
+      --card:#FFFFFF;
+      --green:#12B76A;
+      --amber:#F79009;
+      --shadow:0 22px 55px rgba(16,24,40,.16);
+      --radius:28px;
+    }
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    body{
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, rgba(0,61,165,.18), transparent 34%), linear-gradient(180deg,#f4f7ff,#eef2f8 45%,#e9edf5);
+      min-height:100vh;
+      color:var(--ink);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:22px;
+    }
+    .phone{
+      width:min(430px,100%);
+      height:min(920px, calc(100vh - 44px));
+      min-height:720px;
+      background:var(--soft);
+      border-radius:42px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      border:10px solid #111827;
+      position:relative;
+    }
+    .screen{height:100%;overflow:hidden;position:relative;background:#F7F9FD}
+    .notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:126px;height:30px;background:#111827;border-radius:0 0 18px 18px;z-index:20}
+    .status{height:48px;padding:14px 24px 0;display:flex;justify-content:space-between;font-size:13px;font-weight:700;position:relative;z-index:10;color:#fff}
+    .hero{
+      position:absolute;inset:0 0 auto 0;height:255px;background:linear-gradient(130deg,var(--remax-blue),#0E5ED7 55%,#2F80ED);overflow:hidden;color:#fff;border-bottom-left-radius:34px;border-bottom-right-radius:34px;
+    }
+    .hero:before{content:"";position:absolute;left:-30%;right:-10%;top:82px;height:54px;background:var(--remax-red);transform:rotate(-9deg);opacity:.98}
+    .hero:after{content:"";position:absolute;right:-80px;top:42px;width:230px;height:230px;border-radius:50%;border:42px solid rgba(255,255,255,.12)}
+    .app{position:relative;z-index:2;height:calc(100% - 48px);display:flex;flex-direction:column;padding:0 18px 88px;overflow:auto;scrollbar-width:none}
+    .app::-webkit-scrollbar{display:none}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-top:12px;color:#fff}
+    .brand{display:flex;gap:10px;align-items:center}
+    .balloon{width:38px;height:38px;border-radius:50% 50% 50% 8px;background:#fff;display:grid;place-items:center;transform:rotate(-45deg);box-shadow:0 8px 22px rgba(0,0,0,.16)}
+    .balloon span{transform:rotate(45deg);font-size:11px;font-weight:900;color:var(--remax-blue);letter-spacing:-.5px}
+    .brand h1{font-size:18px;line-height:1;margin:0;font-weight:900;letter-spacing:-.04em}
+    .brand p{font-size:11px;margin:3px 0 0;opacity:.8}
+    .iconbtn{width:42px;height:42px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.12);border-radius:16px;display:grid;place-items:center;color:#fff;font-size:18px;backdrop-filter:blur(10px)}
+    .welcome{margin-top:28px;color:#fff}
+    .welcome h2{font-size:29px;line-height:1.05;margin:0;font-weight:950;letter-spacing:-.06em;max-width:310px}
+    .welcome p{font-size:14px;line-height:1.45;margin:12px 0 0;opacity:.92;max-width:330px}
+    .panel{margin-top:28px;background:var(--card);border-radius:var(--radius);padding:18px;box-shadow:0 16px 38px rgba(16,24,40,.10);border:1px solid rgba(255,255,255,.8)}
+    .date-card{display:flex;gap:12px;align-items:center}
+    .datebox{width:60px;height:64px;border-radius:20px;background:linear-gradient(180deg,#fff,#F1F5FF);border:1px solid #E4EBF8;display:grid;place-items:center;text-align:center;flex:none}
+    .datebox b{font-size:24px;color:var(--remax-blue);line-height:1}.datebox span{font-size:10px;font-weight:800;color:var(--muted)}
+    .date-card h3{margin:0;font-size:18px;letter-spacing:-.03em}.date-card p{margin:5px 0 0;font-size:12px;color:var(--muted);line-height:1.35}
+    .progress{margin-top:16px;height:10px;border-radius:20px;background:#EEF2F6;overflow:hidden}.bar{height:100%;width:42%;background:linear-gradient(90deg,var(--remax-red),var(--remax-blue));border-radius:20px}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.stat{background:#F8FAFC;border:1px solid #EEF2F6;border-radius:18px;padding:10px}.stat b{display:block;font-size:18px}.stat span{font-size:10px;color:var(--muted);font-weight:700}
+    .section-title{display:flex;justify-content:space-between;align-items:end;margin:22px 2px 12px}.section-title h3{font-size:17px;margin:0;letter-spacing:-.04em}.section-title button{border:0;background:transparent;color:var(--remax-blue);font-weight:850;font-size:12px}
+    .chips{display:flex;gap:10px;overflow:auto;padding-bottom:4px;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}.chip{flex:none;border:1px solid #E4E7EC;background:#fff;border-radius:999px;padding:10px 13px;font-size:12px;font-weight:800;color:#344054;box-shadow:0 4px 12px rgba(16,24,40,.04)}.chip.active{background:var(--remax-blue);color:#fff;border-color:var(--remax-blue)}
+    .todo-list{display:flex;flex-direction:column;gap:11px}.todo{background:#fff;border:1px solid #EDF0F5;border-radius:23px;padding:14px;display:flex;gap:12px;align-items:flex-start;box-shadow:0 8px 22px rgba(16,24,40,.05);position:relative;overflow:hidden}.todo.done{opacity:.64}.todo.done .todo-title{text-decoration:line-through}.check{width:26px;height:26px;border-radius:10px;border:2px solid #D0D5DD;display:grid;place-items:center;flex:none;font-weight:900;color:#fff;font-size:14px}.todo.done .check{background:var(--green);border-color:var(--green)}.todo-main{min-width:0;flex:1}.todo-title{font-size:14px;font-weight:880;letter-spacing:-.02em}.todo-meta{margin-top:6px;display:flex;gap:7px;flex-wrap:wrap}.badge{font-size:10px;font-weight:850;padding:5px 8px;border-radius:999px;background:#F2F4F7;color:#475467}.badge.red{background:#FFF1F1;color:var(--remax-red)}.badge.blue{background:#EFF6FF;color:var(--remax-blue)}.badge.amber{background:#FFF7ED;color:#B54708}.todo-actions{display:flex;gap:6px}.mini{width:28px;height:28px;border-radius:11px;border:0;background:#F2F4F7;color:#475467;font-weight:900}
+    .quick-add{position:sticky;bottom:0;margin-top:14px;background:rgba(247,249,253,.78);backdrop-filter:blur(18px);padding:12px 0 0}.addbox{display:flex;gap:8px;background:#fff;border:1px solid #E6EAF0;border-radius:22px;padding:8px;box-shadow:0 12px 30px rgba(16,24,40,.09)}.addbox input{flex:1;border:0;outline:0;font-size:14px;padding:0 8px;background:transparent}.addbox button{border:0;border-radius:16px;background:var(--remax-red);color:#fff;font-weight:900;padding:12px 14px}
+    .nav{position:absolute;left:18px;right:18px;bottom:18px;height:64px;background:rgba(255,255,255,.92);backdrop-filter:blur(18px);border:1px solid rgba(228,231,236,.9);border-radius:26px;display:grid;grid-template-columns:repeat(4,1fr);box-shadow:0 18px 40px rgba(16,24,40,.15);z-index:12}.nav button{border:0;background:transparent;color:#98A2B3;font-size:11px;font-weight:850;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}.nav button.active{color:var(--remax-blue)}.nav i{font-style:normal;font-size:20px}
+    .sheet{position:absolute;left:0;right:0;bottom:-100%;height:72%;background:#fff;border-radius:34px 34px 0 0;z-index:30;box-shadow:0 -20px 50px rgba(16,24,40,.18);transition:.35s cubic-bezier(.2,.9,.2,1);padding:12px 18px 28px;overflow:auto}.sheet.open{bottom:0}.grab{width:50px;height:5px;border-radius:20px;background:#D0D5DD;margin:0 auto 16px}.sheet-head{display:flex;align-items:center;justify-content:space-between}.sheet h3{margin:0;font-size:21px;letter-spacing:-.05em}.x{border:0;background:#F2F4F7;border-radius:14px;width:38px;height:38px;font-size:18px}.cat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.cat{border:1px solid #E7EAF0;border-radius:22px;padding:14px;background:#fff;min-height:98px}.cat.selected{border-color:var(--remax-blue);box-shadow:0 0 0 4px rgba(0,61,165,.08)}.cat .emoji{font-size:22px}.cat b{display:block;margin-top:8px;font-size:14px}.cat span{display:block;margin-top:4px;font-size:11px;color:var(--muted);line-height:1.25}.primary{width:100%;border:0;border-radius:20px;padding:16px;background:var(--remax-blue);color:#fff;font-size:15px;font-weight:950;margin-top:16px}.ghost{width:100%;border:1px solid #D0D5DD;border-radius:20px;padding:15px;background:#fff;color:#344054;font-size:14px;font-weight:900;margin-top:10px}
+    .ai-card{background:linear-gradient(135deg,#101828,#1D2939);color:#fff;border-radius:26px;padding:16px;margin-top:14px;position:relative;overflow:hidden}.ai-card:after{content:"";position:absolute;right:-42px;top:-42px;width:130px;height:130px;border-radius:50%;background:rgba(227,27,35,.35)}.ai-card b{font-size:14px}.ai-card p{font-size:12px;line-height:1.45;margin:7px 0 0;opacity:.84;position:relative;z-index:1}.ai-row{display:flex;gap:8px;margin-top:12px}.ai-row button{border:0;border-radius:14px;padding:10px 12px;font-weight:900;font-size:11px}.ai-row button:first-child{background:#fff;color:#101828}.ai-row button:last-child{background:rgba(255,255,255,.13);color:#fff}
+    .page{display:none}.page.active{display:block}.search{display:flex;gap:8px;margin-top:12px}.search input{width:100%;border:1px solid #E4E7EC;border-radius:18px;padding:14px;background:#fff;outline:0}.search button{border:0;border-radius:18px;background:var(--remax-blue);color:#fff;font-weight:900;padding:0 14px}.templates{display:grid;gap:10px}.template{display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid #E7EAF0;border-radius:22px;padding:14px}.template b{font-size:14px}.template span{font-size:11px;color:var(--muted)}.switch{width:44px;height:26px;border-radius:999px;background:#E4E7EC;position:relative}.switch:after{content:"";position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;box-shadow:0 2px 5px rgba(0,0,0,.15)}.template.on .switch{background:var(--remax-blue)}.template.on .switch:after{left:21px}
+    @media (max-width:480px){body{padding:0;background:#F7F9FD}.phone{width:100vw;height:100vh;min-height:100vh;border:0;border-radius:0}.status{padding-top:12px}.notch{display:none}.nav{bottom:max(12px,env(safe-area-inset-bottom));}.app{padding-bottom:94px}}
+  </style>
+</head>
+<body>
+  <main class="phone" role="application" aria-label="To-do by RE/MAX demo">
+    <div class="screen">
+      <div class="notch"></div>
+      <div class="hero"></div>
+      <div class="status"><span>09:41</span><span>●●● 5G ▰</span></div>
+      <section class="app">
+        <div class="topbar">
+          <div class="brand"><div class="balloon"><span>RE/MAX</span></div><div><h1>To-do</h1><p>by RE/MAX</p></div></div>
+          <button class="iconbtn" onclick="openSheet('ai')">✦</button>
+        </div>
+
+        <div class="page active" id="home">
+          <div class="welcome"><h2>Taşınmanı küçük adımlara bölelim.</h2><p>Seç, ekle, hatırlat. RE/MAX App içinde taşınma sürecini tek ekrandan takip et.</p></div>
+          <div class="panel">
+            <div class="date-card">
+              <div class="datebox"><b>15</b><span>AĞU</span></div>
+              <div><h3>Taşınmaya 32 gün kaldı</h3><p>Bugün öncelik: abonelikler, nakliye ve site taşıma izni.</p></div>
+            </div>
+            <div class="progress"><div class="bar"></div></div>
+            <div class="stats"><div class="stat"><b id="doneCount">5</b><span>Tamamlandı</span></div><div class="stat"><b id="openCount">12</b><span>Açık iş</span></div><div class="stat"><b>4</b><span>Hatırlatma</span></div></div>
+          </div>
+
+          <div class="section-title"><h3>Kategoriler</h3><button onclick="openSheet('categories')">Düzenle</button></div>
+          <div class="chips"><button class="chip active">Tümü</button><button class="chip">Abonelik</button><button class="chip">Montaj</button><button class="chip">Temizlik</button><button class="chip">Eski ev</button></div>
+
+          <div class="section-title"><h3>Bugünkü işler</h3><button onclick="openSheet('task')">+ Ekle</button></div>
+          <div class="todo-list" id="todoList"></div>
+          <div class="quick-add"><div class="addbox"><input id="quickInput" placeholder="Örn. balkona sineklik yaptır" /><button onclick="addQuickTask()">Ekle</button></div></div>
+        </div>
+
+        <div class="page" id="templates">
+          <div class="welcome"><h2>Hazır taşınma paketleri.</h2><p>Taşınma tipine göre önerilen görevleri tek dokunuşla checklist’ine ekle.</p></div>
+          <div class="panel">
+            <div class="templates">
+              <div class="template on"><div><b>Kiralık eve taşınıyorum</b><br><span>Depozito, abonelik, teslim tutanağı</span></div><div class="switch"></div></div>
+              <div class="template"><div><b>Satın aldığım eve geçiyorum</b><br><span>Tapu sonrası, tadilat, güvenlik</span></div><div class="switch"></div></div>
+              <div class="template on"><div><b>Site içinde taşınma</b><br><span>Yönetim, asansör, otopark, kartlar</span></div><div class="switch"></div></div>
+              <div class="template"><div><b>Şehir değiştiriyorum</b><br><span>Nakliye, okul, adres ve kargo</span></div><div class="switch"></div></div>
+            </div>
+            <button class="primary" onclick="openSheet('categories')">Checklist oluştur</button>
+          </div>
+        </div>
+
+        <div class="page" id="calendar">
+          <div class="welcome"><h2>Zamana duyarlı hatırlatıcılar.</h2><p>Taşınma tarihine göre kritik işleri doğru zamanda hatırlatır.</p></div>
+          <div class="panel">
+            <div class="todo-list">
+              <div class="todo"><div class="check"> </div><div class="todo-main"><div class="todo-title">İnternet nakil başvurusu</div><div class="todo-meta"><span class="badge red">Taşınmadan 10 gün önce</span><span class="badge blue">Otomatik</span></div></div></div>
+              <div class="todo"><div class="check"> </div><div class="todo-main"><div class="todo-title">Elektrik, su, doğalgaz abonelikleri</div><div class="todo-meta"><span class="badge amber">Taşınmadan 3 gün önce</span><span class="badge blue">Yüksek öncelik</span></div></div></div>
+              <div class="todo"><div class="check"> </div><div class="todo-main"><div class="todo-title">Kilit değişimi</div><div class="todo-meta"><span class="badge red">Taşınma günü</span><span class="badge">Güvenlik</span></div></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="page" id="profile">
+          <div class="welcome"><h2>Taşınma dosyan.</h2><p>Belgeler, fotoğraflar, maliyetler ve danışman notları burada tutulur.</p></div>
+          <div class="panel">
+            <div class="stats"><div class="stat"><b>₺42K</b><span>Harcama</span></div><div class="stat"><b>8</b><span>Belge</span></div><div class="stat"><b>3</b><span>Firma</span></div></div>
+            <div class="ai-card"><b>AI Özeti</b><p>Taşınma planın iyi gidiyor. En büyük risk internet nakil süresi ve site yönetiminden taşıma saati onayı görünüyor.</p><div class="ai-row"><button>Öncelikleri göster</button><button>GD ile paylaş</button></div></div>
+          </div>
+        </div>
+      </section>
+
+      <nav class="nav">
+        <button class="active" onclick="showPage('home',this)"><i>✓</i>Liste</button>
+        <button onclick="showPage('templates',this)"><i>▦</i>Paket</button>
+        <button onclick="showPage('calendar',this)"><i>◷</i>Hatırlat</button>
+        <button onclick="showPage('profile',this)"><i>◇</i>Dosya</button>
+      </nav>
+
+      <div class="sheet" id="sheet">
+        <div class="grab"></div>
+        <div id="sheetContent"></div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const tasks = [
+      {title:'Elektrik aboneliğini açtır', cat:'Abonelik', due:'Taşınmadan 3 gün önce', p:'Yüksek', done:false},
+      {title:'Su aboneliğini başlat', cat:'Abonelik', due:'Taşınmadan 3 gün önce', p:'Yüksek', done:false},
+      {title:'İnternet nakil başvurusu yap', cat:'Abonelik', due:'10 gün önce', p:'Acil', done:false},
+      {title:'Nakliye firması seç ve tarih netleştir', cat:'Nakliye', due:'14 gün önce', p:'Acil', done:true},
+      {title:'Site yönetiminden asansör izni al', cat:'Apartman', due:'7 gün önce', p:'Önemli', done:false},
+      {title:'Avize montajı için usta ayarla', cat:'Montaj', due:'Taşınma sonrası', p:'Normal', done:false},
+      {title:'Balkon sineklik ölçüsü aldır', cat:'Montaj', due:'Bu hafta', p:'Normal', done:false},
+      {title:'Kilit değişimi yaptır', cat:'Güvenlik', due:'Taşınma günü', p:'Acil', done:false},
+      {title:'Sayaç fotoğraflarını çek', cat:'Eski ev', due:'Teslim günü', p:'Önemli', done:true},
+    ];
+    const cats = [
+      ['⚡','Abonelikler','Elektrik, su, doğalgaz, internet'],['🧹','Temizlik','Genel temizlik, cam, halı, ilaçlama'],['🔧','Montaj','Avize, sineklik, TV, raf, beyaz eşya'],['🚚','Nakliye','Koli, firma, asansör, eşya planı'],['🏢','Site/Apartman','Yönetim, otopark, kart, taşıma saati'],['🔐','Güvenlik','Kilit, anahtar, alarm, çocuk kilidi'],['🧾','Resmi işler','Adres, ikametgah, banka, okul'],['🏚️','Eski evden çıkış','Depozito, teslim, son faturalar']
+    ];
+    function renderTasks(){
+      const list=document.getElementById('todoList');
+      list.innerHTML=tasks.map((t,i)=>`<div class="todo ${t.done?'done':''}"><button class="check" onclick="toggleTask(${i})">${t.done?'✓':''}</button><div class="todo-main"><div class="todo-title">${t.title}</div><div class="todo-meta"><span class="badge blue">${t.cat}</span><span class="badge ${t.p==='Acil'?'red':t.p==='Önemli'?'amber':''}">${t.due}</span></div></div><div class="todo-actions"><button class="mini" onclick="openSheet('reminder')">◷</button><button class="mini" onclick="openSheet('task')">＋</button></div></div>`).join('');
+      document.getElementById('doneCount').textContent=tasks.filter(t=>t.done).length;
+      document.getElementById('openCount').textContent=tasks.filter(t=>!t.done).length;
+    }
+    function toggleTask(i){tasks[i].done=!tasks[i].done;renderTasks()}
+    function addQuickTask(){const input=document.getElementById('quickInput');const val=input.value.trim();if(!val)return;tasks.unshift({title:val,cat:guessCat(val),due:'Yeni eklendi',p:'Normal',done:false});input.value='';renderTasks()}
+    function guessCat(v){v=v.toLowerCase();if(v.includes('sineklik')||v.includes('avize')||v.includes('montaj'))return 'Montaj';if(v.includes('elektrik')||v.includes('su')||v.includes('internet'))return 'Abonelik';if(v.includes('temiz'))return 'Temizlik';if(v.includes('kilit'))return 'Güvenlik';return 'Özel'}
+    function showPage(id,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+    function openSheet(type){
+      const c=document.getElementById('sheetContent');
+      if(type==='categories') c.innerHTML=`<div class="sheet-head"><h3>Checklist’e ekle</h3><button class="x" onclick="closeSheet()">×</button></div><div class="cat-grid">${cats.map((x,i)=>`<div class="cat ${i<3?'selected':''}" onclick="this.classList.toggle('selected')"><div class="emoji">${x[0]}</div><b>${x[1]}</b><span>${x[2]}</span></div>`).join('')}</div><button class="primary" onclick="closeSheet();toast('Seçilen kategoriler checklist’e eklendi')">Seçilenleri ekle</button><button class="ghost" onclick="openSheet('task')">Elle görev yaz</button>`;
+      if(type==='task') c.innerHTML=`<div class="sheet-head"><h3>Yeni görev</h3><button class="x" onclick="closeSheet()">×</button></div><div class="search"><input id="newTask" placeholder="Örn. mutfak avizesi taktır" /><button onclick="manualAdd()">Ekle</button></div><div class="ai-card"><b>Akıllı öneri</b><p>Yazdığın görevi otomatik kategoriye alır, önerilen hatırlatma tarihini ekler ve checklist’ine yerleştiririm.</p></div><button class="ghost" onclick="openSheet('categories')">Hazır kalemlerden seç</button>`;
+      if(type==='reminder') c.innerHTML=`<div class="sheet-head"><h3>Hatırlatma ekle</h3><button class="x" onclick="closeSheet()">×</button></div><div class="templates" style="margin-top:18px"><div class="template on"><div><b>Taşınmadan 14 gün önce</b><br><span>Nakliye, internet, temizlik</span></div><div class="switch"></div></div><div class="template"><div><b>Taşınmadan 3 gün önce</b><br><span>Abonelik ve sayaç kontrolleri</span></div><div class="switch"></div></div><div class="template"><div><b>Taşınma günü</b><br><span>Kilit, anahtar, eşya kontrolü</span></div><div class="switch"></div></div></div><button class="primary" onclick="closeSheet();toast('Hatırlatma oluşturuldu')">Hatırlatmayı kur</button>`;
+      if(type==='ai') c.innerHTML=`<div class="sheet-head"><h3>AI Taşınma Koçu</h3><button class="x" onclick="closeSheet()">×</button></div><div class="ai-card"><b>Bugünkü yorum</b><p>Taşınmaya 32 gün var. Nakliye tamam, ama abonelikler ve internet başvurusu henüz açık. Bu iki başlık gecikirse taşınma haftası stres yaratabilir.</p><div class="ai-row"><button onclick="closeSheet()">Planı güncelle</button><button>GD’ye gönder</button></div></div><div class="templates"><div class="template"><div><b>Eksik görev öner</b><br><span>Seçimlerine göre yeni kalemler bul</span></div><div>→</div></div><div class="template"><div><b>Maliyetleri tahmin et</b><br><span>Nakliye, montaj, temizlik bütçesi</span></div><div>→</div></div></div>`;
+      document.getElementById('sheet').classList.add('open');
+    }
+    function closeSheet(){document.getElementById('sheet').classList.remove('open')}
+    function manualAdd(){const v=document.getElementById('newTask').value.trim();if(!v)return;tasks.unshift({title:v,cat:guessCat(v),due:'AI önerisi: bu hafta',p:'Normal',done:false});closeSheet();renderTasks()}
+    function toast(msg){const n=document.createElement('div');n.textContent=msg;n.style.cssText='position:absolute;left:34px;right:34px;bottom:94px;background:#101828;color:white;padding:14px 16px;border-radius:18px;text-align:center;font-weight:850;font-size:13px;z-index:50;box-shadow:0 14px 36px rgba(16,24,40,.25)';document.querySelector('.screen').appendChild(n);setTimeout(()=>n.remove(),1800)}
+    renderTasks();
+  </script>
+</body>
+</html>
